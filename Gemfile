@@ -14,6 +14,7 @@ group :assets do
 end
 gem 'jquery-rails'
 gem 'devise'
+gem 'omniauth-twitter'
 
 gem 'turbolinks'
 
