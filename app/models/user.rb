@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :omniauthable,
@@ -27,6 +28,10 @@ class User < ActiveRecord::Base
   end
 
   def password_required?
+    super && provider.blank?
+  end
+
+  def email_required?
     super && provider.blank?
   end
   

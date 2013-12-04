@@ -13,9 +13,12 @@ group :assets do
   gem 'coffee-rails', '~> 4.0.0'
 end
 gem 'jquery-rails'
+gem 'bootstrap-sass'
 gem 'devise'
 gem 'omniauth-twitter'
-
+gem 'cancan'
+gem 'rolify'
+gem 'simple_form'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -24,6 +27,23 @@ gem 'jbuilder', '~> 1.2'
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
+end
+
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+end
+group :test do
+  gem 'capybara'
+  gem 'cucumber-rails', :require=>false
+  gem 'database_cleaner', '1.0.1'
+  gem 'email_spec'
+  gem 'launchy'
+end
+group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
+  gem 'quiet_assets'
 end
 
 # Use ActiveModel has_secure_password

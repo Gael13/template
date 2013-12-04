@@ -1,28 +1,42 @@
 class UsersController < ApplicationController
-  
+  before_action :authenticate_user!
+
   def index
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @users = User.all
   end
 
-  def new
-    @user = User.new
+  def show
+    @user = User.find(params[:id])
   end
 
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome!"
-      redirect_to @user
+  def update
+    authorize! :update, @user, :message => 'Not authorized as an administrator.'
+    @user = User.find(user_params)
+    if @user.update_attributes(params[:user], :as => :admin)
+      redirect_to users_path, :notice => "User updated."
     else
-      render 'new'
+      redirect_to users_path, :alert => "Unable to update user."
     end
   end
+
+  def destroy
+    authorize! :destroy, @user, :message => 'Not authorized as an administrator.'
+    user = User.find(params[:id])
+    unless user == current_user
+      user.destroy
+      redirect_to users_path, :notice => "User deleted."
+    else
+      redirect_to users_path, :notice => "Can't delete yourself."
+    end
+  end      
+        
+
 
   private
 
     def user_params
       params.require(:user).permit(:email, :password,
-                                   :password_confirmation, :remember_me, :username)
+                                   :password_confirmation, :remember_me, :username, :role_ids, :as => :admin)
     end
 end
